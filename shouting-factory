@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+const fs = require('fs')
+const { run } = require('./index')
+
+require('yargs') // eslint-disable-line
+  .usage('$0 <cmd> [args]')
+  .command('run [peerId]', 'starts a new node', (yargs) => {
+    yargs
+      .positional('peerId', {
+        describe: 'unique id of the node',
+        type: 'integer'
+      })
+  }, (argv) => {
+  	console.log(run)
+    run(argv.peerId)
+}).argv
