@@ -27,11 +27,9 @@ module.exports = () => {
 
     const node1 = nodes[0]
     const node2 = nodes[1]
-    //const node3 = nodes[2]
 
     printAddrs(node1, '1')
     printAddrs(node2, '2')
-    //printAddrs(node3, '3')
 
     node1.handle('/print', print)
     node2.handle('/print', print)
@@ -39,33 +37,21 @@ module.exports = () => {
     node1.once('peer:connect', (peer) => {
       console.log('connected to %s', peer.id.toB58String())
 
-      // Subscribe to the topic 'news'
-      node1.pubsub.subscribe('news',
+      node1.pubsub.subscribe('yelling',
         (msg) => console.log(msg.from, msg.data.toString()),
-        () => {
-        //   setInterval(() => {
-        //     // Publish the message on topic 'news'
-        //     node2.pubsub.publish(
-        //       'news',
-        //       Buffer.from('Bird bird bird, bird is the word!'),
-        //       () => {}
-        //     )
-        //   }, 1000)
-        }
+        () => {}
       )
 
     const stdin = process.openStdin();
 
     stdin.addListener("data", function(d) {
-      // note:  d is an object, and when converted to a string it will
-      // end with a linefeed.  so we (rather crudely) account for that  
-      // with toString() and then trim() 
-      console.log("you entered: [" + 
-          d.toString().trim() + "]");
+
+      const input = d.toString().trim()
+      console.log("you entered: [" + input + "]");
 
       node2.pubsub.publish(
-        'news',
-        Buffer.from('Bird bird bird, bird is the word!'),
+        'yelling',
+        Buffer.from(input),
         () => {}
       )
     });
