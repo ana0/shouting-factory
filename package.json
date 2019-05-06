@@ -25,12 +25,10 @@
   "dependencies": {
     "@nodeutils/defaults-deep": "^1.1.0",
     "libp2p": "^0.25.2",
-    "libp2p-kad-dht": "^0.14.13",
     "libp2p-mdns": "^0.12.2",
     "libp2p-secio": "^0.11.1",
     "libp2p-spdy": "^0.13.3",
     "libp2p-tcp": "^0.13.0",
-    "libp2p-websockets": "^0.12.2",
     "peer-info": "^0.15.1",
     "pull-stream": "^3.6.10",
     "save": "^2.3.3",

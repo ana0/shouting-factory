@@ -1,6 +1,6 @@
 'use strict'
 
-const pull = require('pull-stream')
+//const pull = require('pull-stream')
 const createNode = require('./createNode')
 
 function printAddrs (node, number) {
@@ -8,48 +8,39 @@ function printAddrs (node, number) {
   node.peerInfo.multiaddrs.forEach((ma) => console.log(ma.toString()))
 }
 
-function print (protocol, conn) {
-  pull(
-    conn,
-    pull.map((v) => v.toString()),
-    pull.log()
-  )
-}
+// function print (protocol, conn) {
+//   pull(
+//     conn,
+//     pull.map((v) => v.toString()),
+//     pull.log()
+//   )
+// }
 
 module.exports = () => { 
   console.log('called')
   
-  return Promise.all([
-      createNode('/ip4/0.0.0.0/tcp/0'),
-      createNode('/ip4/0.0.0.0/tcp/0'),
-    ])
-  .then(nodes => {
+  return createNode('/ip4/0.0.0.0/tcp/0')
+  .then(node => {
+    printAddrs(node, '1')
 
-    const node1 = nodes[0]
-    const node2 = nodes[1]
+    // node.handle('/print', print)
 
-    printAddrs(node1, '1')
-    printAddrs(node2, '2')
-
-    node1.handle('/print', print)
-    node2.handle('/print', print)
-
-    node1.once('peer:connect', (peer) => {
+    node.once('peer:connect', (peer) => {
       console.log('connected to %s', peer.id.toB58String())
 
-      node1.pubsub.subscribe('yelling',
+      node.pubsub.subscribe('yelling',
         (msg) => console.log(msg.from, msg.data.toString()),
         () => {}
       )
 
     const stdin = process.openStdin();
 
-    stdin.addListener("data", function(d) {
+    stdin.addListener("data", function(i) {
 
-      const input = d.toString().trim()
+      const input = i.toString().trim()
       console.log("you entered: [" + input + "]");
 
-      node2.pubsub.publish(
+      node.pubsub.publish(
         'yelling',
         Buffer.from(input),
         () => {}
