@@ -1,6 +1,5 @@
 'use strict'
 
-//const pull = require('pull-stream')
 const createNode = require('./createNode')
 
 function printAddrs (node, number) {
@@ -8,22 +7,12 @@ function printAddrs (node, number) {
   node.peerInfo.multiaddrs.forEach((ma) => console.log(ma.toString()))
 }
 
-// function print (protocol, conn) {
-//   pull(
-//     conn,
-//     pull.map((v) => v.toString()),
-//     pull.log()
-//   )
-// }
-
 module.exports = () => { 
   console.log('called')
   
   return createNode('/ip4/0.0.0.0/tcp/0')
   .then(node => {
     printAddrs(node, '1')
-
-    // node.handle('/print', print)
 
     node.once('peer:connect', (peer) => {
       console.log('connected to %s', peer.id.toB58String())
@@ -37,7 +26,7 @@ module.exports = () => {
 
     stdin.addListener("data", function(i) {
 
-      const input = i.toString().trim()
+      const input = i.toString().trim().toUpperCase()
       console.log("you entered: [" + input + "]");
 
       node.pubsub.publish(
