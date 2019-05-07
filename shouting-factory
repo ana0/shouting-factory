@@ -11,6 +11,5 @@ require('yargs') // eslint-disable-line
         type: 'integer'
       })
   }, (argv) => {
-  	console.log(run)
     run(argv.peerId)
 }).argv

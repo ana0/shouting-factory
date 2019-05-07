@@ -1,19 +1,15 @@
 'use strict'
 
 const PeerInfo = require('peer-info')
-const MyBundle = require("./bundle")
+const Bundle = require("./bundle")
 
-const createNode = (addrs) => {
-  if (!Array.isArray(addrs)) {
-    addrs = [addrs]
-  }
-
+const createNode = (addr) => {
   let node
 
   return new Promise((res) => PeerInfo.create((err, peerInfo) => res(peerInfo)))
   .then(peerInfo => {
-    addrs.forEach((addr) => peerInfo.multiaddrs.add(addr))
-    node = new MyBundle({ peerInfo })
+    peerInfo.multiaddrs.add(addr)
+    node = new Bundle({ peerInfo })
     return new Promise((res) => node.start((err) => { if (err) { throw(err) } res(node) }))
   })
 }

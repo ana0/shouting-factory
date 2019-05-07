@@ -7,7 +7,7 @@ const MulticastDNS = require('libp2p-mdns')
 const SECIO = require('libp2p-secio')
 const defaultsDeep = require('@nodeutils/defaults-deep')
 
-class MyBundle extends libp2p {
+class Bundle extends libp2p {
   constructor (_options) {
     const defaults = {
       modules: {
@@ -33,4 +33,4 @@ class MyBundle extends libp2p {
   }
 }
 
-module.exports = MyBundle
+module.exports = Bundle

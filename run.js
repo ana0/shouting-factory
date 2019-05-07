@@ -16,27 +16,25 @@ module.exports = () => {
 
     node.once('peer:connect', (peer) => {
       console.log('connected to %s', peer.id.toB58String())
-
       node.pubsub.subscribe('yelling',
         (msg) => console.log(msg.from, msg.data.toString()),
         () => {}
       )
+    })
 
     const stdin = process.openStdin();
 
     stdin.addListener("data", function(i) {
-
-      const input = i.toString().trim().toUpperCase()
+      const input = i.toString().trim()
       console.log("you entered: [" + input + "]");
-
       node.pubsub.publish(
         'yelling',
-        Buffer.from(input),
+        Buffer.from(input.toUpperCase()),
         () => {}
       )
     });
-
-
-    })
   })
 }
+
+
+
