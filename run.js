@@ -7,17 +7,18 @@ function printAddrs (node, number) {
   node.peerInfo.multiaddrs.forEach((ma) => console.log(ma.toString()))
 }
 
-module.exports = () => { 
+module.exports = (peerId) => { 
   console.log('called')
   
   return createNode('/ip4/0.0.0.0/tcp/0')
   .then(node => {
-    printAddrs(node, '1')
+    printAddrs(node, peerId)
 
     node.once('peer:connect', (peer) => {
       console.log('connected to %s', peer.id.toB58String())
       node.pubsub.subscribe('yelling',
-        (msg) => console.log(msg.from, msg.data.toString()),
+        (msg) => { if (msg.from != node.peerInfo.id.toB58String()) {
+          console.log(msg.from, msg.data.toString()) } },
         () => {}
       )
     })
